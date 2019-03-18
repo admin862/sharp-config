@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ConfigVersionMapper">
+
+    <sql id="columns">
+        lId 			    AS 		id ,
+        lEnvironmentId 	    AS 		environmentId ,
+        strEnvironmentName  AS  	environmentName,
+        strEnvironmentPath  AS  	environmentPath,
+        lGroupId     	    AS  	groupId,
+        strGroupName     	AS  	groupName,
+        strData             AS      dataInfo,
+        lAppId              AS      appId,
+        strAppName          AS      appName,
+        strConfigName       AS      configName,
+        nVersion            AS      version,
+        nIsDelete           AS      isDelete,
+        strRemark           AS      remark,
+        dtCreateTime 	    AS 		createTime
+    </sql>
+
+    <insert id="save">
+        INSERT INTO tbConfigVersion (lEnvironmentId,strEnvironmentName,strEnvironmentPath,lGroupId,strGroupName,strAppName,lAppId,strConfigName,strData,nVersion,strRemark,
+        dtCreateTime,dtModifyTime) VALUES (#{environmentId},#{environmentName},#{environmentPath},#{groupId},#{groupName},#{appName},#{appId},#{configName},
+        #{dataInfo},#{version},#{remark},NOW(),NOW())
+    </insert>
+
+    <select id="getConfigVersionById" resultType="ConfigVersion">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfigVersion WHERE lId = #{id}
+    </select>
+
+    <select id="getConfigVersionByAppIdAndConfigName" resultType="ConfigVersion">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfigVersion WHERE lAppId = #{appId} AND strConfigName = #{configName} AND nIsDelete = 0
+    </select>
+
+    <select id="getMaxConfigVersionByAppIdAndConfigName" resultType="ConfigVersion">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfigVersion WHERE lAppId = #{appId} AND strConfigName = #{configName} ORDER BY nVersion DESC LIMIT 1
+    </select>
+
+    <select id="getConfigVersionBy" resultType="ConfigVersion">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfigVersion WHERE strEnvironmentPath = #{environmentPath} AND strGroupName = #{groupName} AND strAppName = #{appName}
+        AND strConfigName = #{configName} AND nVersion = #{version}
+    </select>
+
+    <select id="getConfigVersionByEnvAndGroupAndAppAndConfig" resultType="ConfigVersion">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfigVersion WHERE strEnvironmentPath = #{environmentPath} AND strGroupName = #{groupName} AND strAppName = #{appName}
+        AND strConfigName = #{configName} AND nIsDelete = 0
+    </select>
+
+    <update id="deleteVersion">
+        UPDATE tbConfigVersion SET nIsDelete = 1 WHERE lId = #{id}
+    </update>
+
+    <update id="deleteVersionByAppIdAndConfigName">
+        UPDATE tbConfigVersion SET nIsDelete = 1 WHERE lAppId = #{appId} AND strConfigName = #{configName}
+    </update>
+
+</mapper>

@@ -1,0 +1,98 @@
+use Config;
+
+DROP TABLE IF EXISTS `tbConfig`;
+CREATE TABLE `tbConfig` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `lEnvironmentId`        bigint(20)            NOT NULL                                         COMMENT '所属环境id',
+  `strEnvironmentName`    varchar(64)           NOT NULL                                         COMMENT '所属环境名称',
+  `strEnvironmentPath`    varchar(64)           NOT NULL                                         COMMENT '所属环境路径',
+  `lGroupId`              bigint(20)            NOT NULL                                         COMMENT '组id',
+  `strGroupName`          varchar(64)           NOT NULL                                         COMMENT '组名称',
+  `lAppId`                bigint(20)            NOT NULL                                         COMMENT 'AppId',
+  `strAppName`            varchar(64)           NOT NULL                                         COMMENT 'App名称',
+  `strConfigName`         varchar(128)          NOT NULL                                         COMMENT 'config名称',
+  `strData`               varchar(3000)         NOT NULL             DEFAULT ''                  COMMENT '系统参数',
+  `nVersion`              int(12)               NOT NULL                                         COMMENT '版本号',
+  `strRemark`             varchar(1024)         NOT NULL             DEFAULT ''                  COMMENT '备注',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置表';
+
+DROP TABLE IF EXISTS `tbConfigVersion`;
+CREATE TABLE `tbConfigVersion` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `lEnvironmentId`        bigint(20)            NOT NULL                                         COMMENT '所属环境id',
+  `strEnvironmentName`    varchar(64)           NOT NULL                                         COMMENT '所属环境名称',
+  `strEnvironmentPath`    varchar(64)           NOT NULL                                         COMMENT '所属环境路径',
+  `lGroupId`              bigint(20)            NOT NULL                                         COMMENT '组id',
+  `strGroupName`          varchar(64)           NOT NULL                                         COMMENT '组名称',
+  `lAppId`                bigint(20)            NOT NULL                                         COMMENT 'AppId',
+  `strAppName`            varchar(64)           NOT NULL                                         COMMENT 'App名称',
+  `strConfigName`         varchar(128)          NOT NULL                                         COMMENT 'config名称',
+  `strData`               varchar(3000)         NOT NULL             DEFAULT ''                  COMMENT '系统参数',
+  `nVersion`              int(12)               NOT NULL                                         COMMENT '版本号',
+  `strRemark`             varchar(1024)          NOT NULL            DEFAULT ''                  COMMENT '备注',
+  `nIsDelete`             int(12)               NOT NULL             DEFAULT 0                   COMMENT '软删除标示 0-未删除 1-已删除',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置版本表';
+
+INSERT INTO `Config`.`tbConfig` (`lId`, `lEnvironmentId`, `strEnvironmentName`, `strEnvironmentPath`, `strGroupName`, `strAppName`, `lAppId`, `strConfigName`, `strData`, `nVersion`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('1', '1', '线上环境','online', 'KaoLa', 'KaoLaGateway', '1', 'config.properties', 'para0=abc', '1', '2017-04-08 16:44:13', '2017-04-08 16:44:15', '2017-04-15 18:09:05');
+INSERT INTO `Config`.`tbConfig` (`lId`, `lEnvironmentId`, `strEnvironmentName`, `strEnvironmentPath`, `strGroupName`, `strAppName`, `lAppId`, `strConfigName`, `strData`, `nVersion`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('2', '1', '线上环境','online', 'KaoLa', 'KaoLaGateway', '1', 'redis.properties', '1', '1', '2017-04-12 21:46:14', '2017-04-12 21:46:14', '2017-04-15 18:09:06');
+
+INSERT INTO `Config`.`tbConfigVersion` (`lId`, `lEnvironmentId`, `strEnvironmentName`, `strEnvironmentPath`, `strGroupName`, `strAppName`, `lAppId`, `strConfigName`, `strData`, `nVersion`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('1', '1', '线上环境','online', 'KaoLa', 'KaoLaGateway', '1', 'config.properties', 'para0=abc', '1', '2017-04-08 16:44:13', '2017-04-08 16:44:15', '2017-04-15 18:09:30');
+INSERT INTO `Config`.`tbConfigVersion` (`lId`, `lEnvironmentId`, `strEnvironmentName`, `strEnvironmentPath`, `strGroupName`, `strAppName`, `lAppId`, `strConfigName`, `strData`, `nVersion`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('2', '1', '线上环境','online', 'KaoLa', 'KaoLaGateway', '1', 'redis.properties', '1', '1', '2017-04-12 21:46:14', '2017-04-12 21:46:14', '2017-04-15 18:09:35');
+
+DROP TABLE IF EXISTS `tbEnvironment`;
+CREATE TABLE `tbEnvironment` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `strName`               varchar(64)           NOT NULL                                         COMMENT '环境名称',
+  `strPath`               varchar(64)           NOT NULL                                         COMMENT '环境根路径',
+  `strRemark`             varchar(64)           NOT NULL                                         COMMENT '备注',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='环境信息表';
+
+INSERT INTO `Config`.`tbEnvironment` (`lId`, `strName`, `strPath`, `strRemark`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('1', '生产环境', 'online', '线上生产环境', '2017-04-12 21:26:11', '2017-04-12 21:26:14', '2017-04-12 21:26:17');
+INSERT INTO `Config`.`tbEnvironment` (`lId`, `strName`, `strPath`, `strRemark`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('2', '测试环境', 'test', '测试环境106', '2017-04-12 21:26:43', '2017-04-12 21:26:45', '2017-04-12 21:26:47');
+INSERT INTO `Config`.`tbEnvironment` (`lId`, `strName`, `strPath`, `strRemark`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('3', '测试环境0', 'test0', '测试环境0', '2017-04-12 21:44:52', '2017-04-12 21:44:54', '2017-04-12 21:44:57');
+
+DROP TABLE IF EXISTS `tbGroupInfo`;
+CREATE TABLE `tbGroupInfo` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `lEnvironmentId`        bigint(20)            NOT NULL                                         COMMENT '所属环境id',
+  `strEnvironmentName`    varchar(64)           NOT NULL                                         COMMENT '所属环境名称',
+  `strEnvironmentPath`    varchar(64)           NOT NULL                                         COMMENT '所属环境路径',
+  `strGroupName`          varchar(64)           NOT NULL                                         COMMENT '组名称',
+  `strRemark`             varchar(128)          NOT NULL                                         COMMENT '备注',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='组信息表';
+
+INSERT INTO `Config`.`tbGroupInfo` (`lId`, `lEnvironmentId`, `strEnvironmentName`, `strEnvironmentPath`, `strGroupName`, `strRemark`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('1', '1', '线上环境', 'online', 'KaoLa', '考拉资金方', '2017-04-06 13:35:08', '2017-04-06 13:35:10', '2017-04-06 13:35:11');
+
+DROP TABLE IF EXISTS `tbAppInfo`;
+CREATE TABLE `tbAppInfo` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `lEnvironmentId`        bigint(20)            NOT NULL                                         COMMENT '所属环境id',
+  `strEnvironmentName`    varchar(64)           NOT NULL                                         COMMENT '所属环境名称',
+  `strEnvironmentPath`    varchar(64)           NOT NULL                                         COMMENT '所属环境路径',
+  `lGroupId`              bigint(20)            NOT NULL                                         COMMENT '所属组id',
+  `strGroupName`          varchar(64)           NOT NULL                                         COMMENT '组名称',
+  `strAppName`            varchar(64)           NOT NULL                                         COMMENT 'App名称',
+  `strRemark`             varchar(64)           NOT NULL                                         COMMENT '备注',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='App信息表';
+
+INSERT INTO `Config`.`tbAppInfo` (`lId`, `lEnvironmentId`, `strEnvironmentName`, `strEnvironmentPath`, `lGroupId`, `strGroupName`, `strAppName`, `strRemark`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('1', '1', '线上环境','online', '1', 'KaoLa', 'KaoLaGateway', '考拉网关项目', '2017-04-06 13:57:04', '2017-04-06 13:57:07', '2017-04-06 13:57:10');

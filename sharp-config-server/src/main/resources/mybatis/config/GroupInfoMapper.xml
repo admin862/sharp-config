@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GroupInfoMapper">
+
+    <sql id="columns">
+        lId 			    AS 		id ,
+        lEnvironmentId      AS      environmentId,
+        strEnvironmentName  AS      environmentName,
+        strEnvironmentPath  AS      environmentPath,
+        strGroupName     	AS  	groupName,
+        strRemark           AS      remark,
+        dtCreateTime 	    AS 		createTime,
+        dtModifyTime 	    AS 		modifyTime
+    </sql>
+
+    <insert id="save">
+        INSERT INTO tbGroupInfo (lEnvironmentId,strEnvironmentName,strEnvironmentPath,strGroupName,strRemark,dtCreateTime,dtModifyTime)
+        VALUES (#{environmentId},#{environmentName},#{environmentPath},#{groupName},#{remark},NOW(),NOW())
+    </insert>
+
+    <select id="getGroupInfoById" resultType="GroupInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbGroupInfo WHERE lId = #{groupInfoId}
+    </select>
+
+    <select id="getGroupInfoByEnvIdAndGroupName" resultType="GroupInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbGroupInfo WHERE lEnvironmentId = #{envId} AND  strGroupName = #{groupName}
+    </select>
+
+    <select id="getGroupInfoByGroupName" resultType="GroupInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbGroupInfo WHERE strGroupName = #{groupName}
+    </select>
+
+    <select id="getUndeleteGroupInfoListByGroupName" resultType="GroupInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbGroupInfo WHERE strGroupName = #{groupName} AND nIsDelete = 0
+    </select>
+
+    <select id="getAllGroupInfo" resultType="GroupInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbGroupInfo
+    </select>
+
+    <select id="getUndeleteAllGroupInfo" resultType="GroupInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbGroupInfo WHERE nIsDelete = 0
+    </select>
+
+    <select id="getGroupInfoListByEnvId" resultType="GroupInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbGroupInfo WHERE lEnvironmentId = #{envId}
+    </select>
+
+    <update id="deleteGroupById">
+        UPDATE tbGroupInfo SET nIsDelete = 1 WHERE lId = #{groupId}
+    </update>
+
+    <select id="getGroupListByRoleId" resultType="GroupInfo">
+		SELECT <include refid="columns" />
+        FROM tbGroupInfo WHERE lId IN (SELECT DISTINCT (lGroupId) FROM
+        tbRoleGroupRelation WHERE lRoleId IN
+        <foreach item="role" collection="roles" separator="," open="(" close=")">
+            #{role.id}
+        </foreach>
+        )
+	</select>
+
+</mapper>

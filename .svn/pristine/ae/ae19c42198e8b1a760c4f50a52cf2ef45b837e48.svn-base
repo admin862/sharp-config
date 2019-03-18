@@ -1,0 +1,18 @@
+use demo;
+
+DROP TABLE IF EXISTS `tbFundProvider`;
+CREATE TABLE `tbFundProvider` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `nCode`                 int(11)               NOT NULL                                         COMMENT '资金方编号',
+  `strName`               varchar(64)           NOT NULL                                         COMMENT '资金方名称',
+  `lTotalAmount`          bigint(20)            NOT NULL                                         COMMENT '默认放款金额',
+  `lFundUserId`           varchar(128)          NOT NULL                                         COMMENT '债权人ID',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资金方表';
+
+
+INSERT INTO `demo`.`tbFundProvider` (`lId`, `nCode`, `strName`, `lTotalAmount`, `lFundUserId`, `dtCreateTime`, `dtModifyTime`, `tsRefreshTime`) VALUES ('1', '25', '考拉', '100000000', '100000', '2017-04-19 10:03:54', '2017-04-19 10:03:56', '2017-04-19 10:04:01');
+

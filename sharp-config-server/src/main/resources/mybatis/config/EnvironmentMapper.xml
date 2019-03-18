@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EnvironmentMapper">
+
+    <sql id="columns">
+        lId 			    AS 		id ,
+        strName     	    AS  	name,
+        strPath             AS      path,
+        strRemark           AS      remark,
+        dtCreateTime 	    AS 		createTime,
+        dtModifyTime 	    AS 		modifyTime
+    </sql>
+
+    <insert id="save">
+        INSERT INTO tbEnvironment (strName,strPath,strRemark,dtCreateTime,dtModifyTime) VALUES (#{name},#{path},#{remark},NOW(),NOW())
+    </insert>
+
+    <select id="getEnvironmentById" resultType="Environment">
+        SELECT
+        <include refid="columns" />
+        FROM tbEnvironment WHERE lId = #{id}
+    </select>
+
+    <select id="getEnvironmentByName" resultType="Environment">
+        SELECT
+        <include refid="columns" />
+        FROM tbEnvironment WHERE strName = #{name}
+    </select>
+
+    <select id="getEnvironmentByPath" resultType="Environment">
+        SELECT
+        <include refid="columns" />
+        FROM tbEnvironment WHERE strPath = #{path}
+    </select>
+
+    <select id="getAllEnvironment" resultType="Environment">
+        SELECT
+        <include refid="columns" />
+        FROM tbEnvironment
+    </select>
+
+</mapper>

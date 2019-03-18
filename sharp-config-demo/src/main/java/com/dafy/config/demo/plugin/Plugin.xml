@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ServicePlugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.cdoframework.com/xsd/ServiceBus.xsd">
+
+	<ServiceConfig Name="FundProviderService">
+		<DataService Resource="com/dafy/config/demo/plugin/FundProviderService.xml" Encoding="utf-8" />
+	</ServiceConfig>
+	
+</ServicePlugin>

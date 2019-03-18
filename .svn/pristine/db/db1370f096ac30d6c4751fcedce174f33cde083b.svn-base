@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ConfigMapper">
+
+    <sql id="columns">
+        lId 			    AS 		id ,
+        lEnvironmentId 	    AS 		environmentId ,
+        strEnvironmentName  AS  	environmentName,
+        strEnvironmentPath  AS  	environmentPath,
+        lGroupId     	    AS  	groupId,
+        strGroupName     	AS  	groupName,
+        strData             AS      dataInfo,
+        lAppId              AS      appId,
+        strAppName          AS      appName,
+        strConfigName       AS      configName,
+        nVersion            AS      version,
+        strRemark           AS      remark,
+        dtCreateTime 	    AS 		createTime
+    </sql>
+
+    <insert id="save">
+        INSERT INTO tbConfig (lEnvironmentId,strEnvironmentName,strEnvironmentPath,lGroupId,strGroupName,strAppName,lAppId,strConfigName,strData,nVersion,strRemark,
+        dtCreateTime,dtModifyTime) VALUES (#{environmentId},#{environmentName},#{environmentPath},#{groupId},#{groupName},#{appName},#{appId},#{configName},
+        #{dataInfo},#{version},#{remark},NOW(),NOW())
+    </insert>
+
+    <select id="getConfigById" resultType="ConfigBean">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfig  WHERE lId = #{id}
+    </select>
+
+    <select id="getConfigByAppId" resultType="ConfigBean">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfig  WHERE lAppId = #{appId}
+    </select>
+
+    <select id="getConfigByEnvIdAndAppName" resultType="ConfigBean">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfig  WHERE lEnvironmentId = #{envId} AND strAppName = #{appName}
+    </select>
+
+    <select id="getConfigByEnvironmentPath" resultType="ConfigBean">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfig WHERE strEnvironmentPath = #{environmentPath}
+    </select>
+
+    <select id="getConfigByAppIdConfigName" resultType="ConfigBean">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfig WHERE lAppId = #{appId} AND strConfigName = #{configName}
+    </select>
+
+    <select id="getConfigBy" resultType="ConfigBean">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfig WHERE strEnvironmentPath = #{environmentPath} AND strGroupName = #{groupName} AND strAppName = #{appName}
+        AND strConfigName = #{configName}
+    </select>
+
+    <select id="getAllConfig" resultType="ConfigBean">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfig
+    </select>
+
+    <select id="getConfigListByEnvGroupConfig" resultType="ConfigBean">
+        SELECT
+        <include refid="columns" />
+        FROM tbConfig WHERE strEnvironmentPath = #{environmentPath} AND strGroupName = #{groupName} AND strConfigName = #{configName}
+    </select>
+
+    <update id="updateVersion">
+        UPDATE tbConfig SET strData = #{data},nVersion = #{version} WHERE lId = #{id}
+    </update>
+
+    <delete id="deleteConfigById">
+        DELETE FROM tbConfig WHERE lId = #{id}
+    </delete>
+
+</mapper>

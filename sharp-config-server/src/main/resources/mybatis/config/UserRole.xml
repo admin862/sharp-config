@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserRoleMapper">
+
+	<sql id="userColumns">
+		lId AS id,
+		strUsername AS username,
+		strPassword AS password,
+		strNickname AS nickname,
+		strMobile AS mobile,
+		strEmail AS email,
+		dtCreateTime AS createTime,
+		nEnable AS enable
+	</sql>
+
+	<sql id="roleColumns">
+		lId 			AS id,
+		strRolename 	AS rolename,
+		strDescription 	AS description,
+		dtCreateTime 	AS createTime
+	</sql>
+
+	<update id="updateUser" parameterType="User">
+		UPDATE tbUser SET
+		`strUsername`=#{username},
+		`strPassword`=#{password},
+		`strMobile`=#{mobile},
+		`strNickname`=#{nickname},
+		`strEmail`=#{email}
+		WHERE lid=#{id}
+	</update>
+
+	<update id="updateUserEnable" parameterType="User">
+		UPDATE tbUser SET
+		nEnable = #{enable}
+		WHERE lid=#{id}
+	</update>
+
+	<update id="updateUserPwd">
+		UPDATE tbUser SET strPassword = #{password} WHERE strUsername = #{username}
+	</update>
+
+	<insert id="saveUser" parameterType="User" useGeneratedKeys="true"
+    	keyProperty="id">
+		INSERT INTO `tbUser` (
+			`strUsername`,
+			`strPassword`,
+			`strNickname`,
+			`strMobile`,
+			`strEmail`,
+			`nEnable`,
+			`dtCreateTime`)
+		VALUES (
+			#{username},
+			#{password},
+			#{nickname}
+			#{mobile},
+			#{email},
+			1,
+			NOW());
+			
+	</insert>
+	
+	<insert id="saveUserRoleRelation">
+		INSERT INTO tbUserRoleRelation (lUserId, lRoleId) VALUES
+		<foreach collection="roles" item="role" open="(" close=")" separator="),(" >
+			  #{id}, #{role.id}
+		</foreach>
+	</insert>
+
+	<delete id="deleteUserRoleRelation">
+		DELETE FROM tbUserRoleRelation WHERE
+		<foreach collection="roles" item="role" open="(" close=")" separator=") or (" >
+			lUserId=#{id} and lRoleId=#{role.id}
+		</foreach>
+	</delete>
+
+
+	<select id="listUser" resultType="User">
+		SELECT
+		<include refid="userColumns"></include>
+		FROM tbUser order by id
+	</select>
+
+	<select id="listUserByRole" resultType="User">
+		SELECT
+		<include refid="userColumns"></include>
+		FROM tbUser where lId in
+		(select lUserId from tbUserRoleRelation
+		<where>
+			<choose>
+				<when test="id != 0">
+					lRoleId = #{id}
+				</when>
+				<when test="rolename != null and rolename != ''">
+					strRolename = #{rolename}
+				</when>
+			</choose>
+		</where>
+		)
+	</select>
+
+	<select id="getUserById" resultType="User">
+		SELECT
+		<include refid="userColumns"></include>
+		FROM tbUser where lId = #{id}
+	</select>
+
+	<select id="getUserByUsername" resultType="User">
+		SELECT
+		<include refid="userColumns"></include>
+		FROM tbUser where strUsername = #{username}
+	</select>
+
+	<select id="getRoleById" resultType="Role">
+		SELECT
+		<include refid="roleColumns"></include>
+		FROM tbRole where lId = #{id}
+	</select>
+
+	<select id="getRoleListByUserId" resultType="Role">
+		SELECT
+		<include refid="roleColumns"></include>
+		FROM tbRole where lId in (select lRoleId from tbUserRoleRelation where
+		lUserId = #{id})
+	</select>
+
+	<select id="getRoleByRoleName" resultType="Role">
+		SELECT
+		<include refid="roleColumns"></include>
+		FROM tbRole where strRolename = #{rolename}
+	</select>
+
+</mapper>

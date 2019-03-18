@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AuditTaskMapper">
+
+    <sql id="columns">
+        lId 			    AS 		id ,
+        lFromVersion        AS      fromVersion,
+        lToVersion          AS      toVersion,
+        lFromConfigId       AS      fromConfigId,
+        lToConfigId         AS      toConfigId,
+        nState              AS      state,
+        strSubmitUsername   AS  	submitUsername,
+        strAuditUsername    AS      auditUsername,
+        strEnvName 	        AS 		envName,
+        strGroupName 	    AS 		groupName,
+        strAppName 	        AS 		appName,
+        strConfigName 	    AS 		configName,
+        strRemark 	        AS 		remark,
+        dtCreateTime        AS      createTime
+
+    </sql>
+
+    <insert id="save">
+        INSERT INTO tbAuditTask (lConfigId,lFromVersion,lToVersion,lFromConfigId,lToConfigId,nState,strSubmitUsername,strEnvName,strGroupName,strAppName,strConfigName,strRemark,dtCreateTime)
+        VALUES (#{configId},#{fromVersion},#{toVersion},#{fromConfigId},#{toConfigId},0,#{submitUsername},#{envName},#{groupName},#{appName},#{configName},#{remark},NOW())
+    </insert>
+
+    <select id="getConfigAudit" resultType="AuditTask">
+        SELECT
+        <include refid="columns" />
+        FROM tbAuditTask WHERE nState IN (0,1) AND lConfigId = #{configId}
+    </select>
+
+    <select id="getConfigAuditList" resultType="AuditTask">
+        SELECT
+        <include refid="columns" />
+        FROM tbAuditTask ORDER BY lId DESC LIMIT #{offset},#{pageSize}
+    </select>
+
+    <select id="countList" resultType="long">
+        SELECT COUNT(*) FROM tbAuditTask
+    </select>
+
+    <select id="getConfigAuditBy" resultType="AuditTask">
+        SELECT
+        <include refid="columns" />
+        FROM tbAuditTask WHERE lConfigId = #{configId} AND lFromVersion = #{fromVersion} AND lToVersion = #{toVersion} AND nState IN (0,1)
+    </select>
+
+    <update id="updateById">
+        UPDATE tbAuditTask
+        <set>
+            <if test="auditUsername != null">strAuditUsername = #{auditUsername},</if>
+            <if test="state != null">nState = #{state}</if>
+        </set>
+        WHERE lId = #{id}
+    </update>
+
+    <update id="updateBy">
+        UPDATE tbAuditTask SET nState = #{state}
+        WHERE lConfigId = #{configId} AND lFromVersion = #{fromVersion} AND lToVersion = #{toVersion} AND nState IN (0,1)
+    </update>
+
+</mapper>

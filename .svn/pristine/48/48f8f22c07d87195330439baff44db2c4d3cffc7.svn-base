@@ -1,0 +1,85 @@
+use Config;
+
+DROP TABLE IF EXISTS `tbConfig`;
+CREATE TABLE `tbConfig` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `lEnvironmentId`        bigint(20)            NOT NULL                                         COMMENT '所属环境id',
+  `strEnvironmentName`    varchar(64)           NOT NULL                                         COMMENT '所属环境名称',
+  `strEnvironmentPath`    varchar(64)           NOT NULL                                         COMMENT '所属环境路径',
+  `lGroupId`              bigint(20)            NOT NULL                                         COMMENT '组id',
+  `strGroupName`          varchar(64)           NOT NULL                                         COMMENT '组名称',
+  `lAppId`                bigint(20)            NOT NULL                                         COMMENT 'AppId',
+  `strAppName`            varchar(64)           NOT NULL                                         COMMENT 'App名称',
+  `strConfigName`         varchar(128)          NOT NULL                                         COMMENT 'config名称',
+  `strData`               varchar(3000)         NOT NULL             DEFAULT ''                  COMMENT '系统参数',
+  `nVersion`              int(12)               NOT NULL                                         COMMENT '版本号',
+  `strRemark`             varchar(1024)         NOT NULL             DEFAULT ''                  COMMENT '备注',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置表';
+
+DROP TABLE IF EXISTS `tbConfigVersion`;
+CREATE TABLE `tbConfigVersion` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `lEnvironmentId`        bigint(20)            NOT NULL                                         COMMENT '所属环境id',
+  `strEnvironmentName`    varchar(64)           NOT NULL                                         COMMENT '所属环境名称',
+  `strEnvironmentPath`    varchar(64)           NOT NULL                                         COMMENT '所属环境路径',
+  `lGroupId`              bigint(20)            NOT NULL                                         COMMENT '组id',
+  `strGroupName`          varchar(64)           NOT NULL                                         COMMENT '组名称',
+  `lAppId`                bigint(20)            NOT NULL                                         COMMENT 'AppId',
+  `strAppName`            varchar(64)           NOT NULL                                         COMMENT 'App名称',
+  `strConfigName`         varchar(128)          NOT NULL                                         COMMENT 'config名称',
+  `strData`               varchar(3000)         NOT NULL             DEFAULT ''                  COMMENT '系统参数',
+  `nVersion`              int(12)               NOT NULL                                         COMMENT '版本号',
+  `strRemark`             varchar(1024)         NOT NULL             DEFAULT ''                  COMMENT '备注',
+  `nIsDelete`             int(12)               NOT NULL             DEFAULT 0                   COMMENT '软删除标示 0-未删除 1-已删除',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置版本表';
+
+
+DROP TABLE IF EXISTS `tbEnvironment`;
+CREATE TABLE `tbEnvironment` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `strName`               varchar(64)           NOT NULL                                         COMMENT '环境名称',
+  `strPath`               varchar(64)           NOT NULL                                         COMMENT '环境根路径',
+  `strRemark`             varchar(64)           NOT NULL                                         COMMENT '备注',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='环境信息表';
+
+DROP TABLE IF EXISTS `tbGroupInfo`;
+CREATE TABLE `tbGroupInfo` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `lEnvironmentId`        bigint(20)            NOT NULL                                         COMMENT '所属环境id',
+  `strEnvironmentName`    varchar(64)           NOT NULL                                         COMMENT '所属环境名称',
+  `strEnvironmentPath`    varchar(64)           NOT NULL                                         COMMENT '所属环境路径',
+  `strGroupName`          varchar(64)           NOT NULL                                         COMMENT '组名称',
+  `strRemark`             varchar(128)          NOT NULL                                         COMMENT '备注',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='组信息表';
+
+DROP TABLE IF EXISTS `tbAppInfo`;
+CREATE TABLE `tbAppInfo` (
+  `lId`                   bigint(20)            NOT NULL             AUTO_INCREMENT              COMMENT '主键id',
+  `lEnvironmentId`        bigint(20)            NOT NULL                                         COMMENT '所属环境id',
+  `strEnvironmentName`    varchar(64)           NOT NULL                                         COMMENT '所属环境名称',
+  `strEnvironmentPath`    varchar(64)           NOT NULL                                         COMMENT '所属环境路径',
+  `lGroupId`              bigint(20)            NOT NULL                                         COMMENT '所属组id',
+  `strGroupName`          varchar(64)           NOT NULL                                         COMMENT '组名称',
+  `strAppName`            varchar(64)           NOT NULL                                         COMMENT 'App名称',
+  `strRemark`             varchar(64)           NOT NULL                                         COMMENT '备注',
+  `dtCreateTime`          datetime              NOT NULL                                         COMMENT '创建时间',
+  `dtModifyTime`          datetime              NOT NULL                                         COMMENT '修改时间',
+  `tsRefreshTime`         timestamp             NOT NULL             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`lId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='App信息表';

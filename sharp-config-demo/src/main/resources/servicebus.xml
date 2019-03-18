@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceBus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../../Design/XML/ServiceBus.xsd" DataGroupId="writeRepayment">
+
+    <DataServiceEngine>com.cdoframework.cdolib.database.BigDataEngine</DataServiceEngine>
+    <DataGroup Id="readDemo" ClassPath="com.dafy.config.demo.DataEngine" Driver="com.mysql.jdbc.Driver">
+        <Database URI="jdbc:mysql://192.168.0.201:3306/demo?Unicode=true&amp;characterEncoding=utf8" LoadLevel="100" KeyIV="DECSECURITYKEYABCDEFG|EiJPWIgQQDgoJXlRy91SZncpdZgwQEHi">
+            <User UserName="writedafy" Password="writeDafy!@#$"/>
+            <ConnectionPool>
+                <MinConnectionCount>1</MinConnectionCount>
+                <MaxConnectionCount>2</MaxConnectionCount>
+            </ConnectionPool>
+        </Database>
+    </DataGroup>
+
+    <Plugin Resource="com/dafy/config/demo/plugin/Plugin.xml" Encoding="utf-8"/>
+    <EventProcessor ThreadCount="1"/>
+    <LocalNode Id="SharpConfigDemo"/>
+    <NodeList Resource="NodeList.xml" Encoding="utf-8"/>
+
+</ServiceBus>

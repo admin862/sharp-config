@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataService xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../../Design/XML/DataService.xsd">
+
+	<SQLTrans TransFlag="0" TransName="getAllFundProviders" DataGroupId="readDemo">
+		<SelectRecordSet OutputId="{cdosFundProvider}">
+			<OutputSQL>SELECT * FROM tbFundProvider </OutputSQL>
+		</SelectRecordSet>
+		<OnException>
+			<Return Code="-1" Text="数据库操作异常" Info="FundTradeService.addTradeRecord.Error"></Return>
+		</OnException>
+		<Return Code="0" Text="操作成功" Info="FundProviderService.getAllFundProviders.OK">
+			<ReturnItem FieldId="{cdosFundProvider}" ValueId="{cdosFundProvider}" />
+		</Return>
+	</SQLTrans>
+
+</DataService>

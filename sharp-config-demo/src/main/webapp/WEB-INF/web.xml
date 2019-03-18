@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:web="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+
+    <display-name></display-name>
+
+    <welcome-file-list>
+        <welcome-file>index.htm</welcome-file>
+    </welcome-file-list>
+
+    <listener>
+        <listener-class>com.dafy.config.demo.ApplicationListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>CDOServlet</servlet-name>
+        <servlet-class>com.dafy.config.demo.BusinessServlet</servlet-class>
+        <init-param>
+            <param-name>TransFilterResource</param-name>
+            <param-value>TransFilter.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CDOServlet</servlet-name>
+        <url-pattern>*.cdo</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>ConfigServlet</servlet-name>
+        <servlet-class>com.dafy.config.demo.ConfigServlet</servlet-class>
+        <web:load-on-startup>0</web:load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConfigServlet</servlet-name>
+        <url-pattern>/config/demo</url-pattern>
+    </servlet-mapping>
+</web-app>

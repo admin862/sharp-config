@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AppInfoMapper">
+
+    <sql id="columns">
+        lId 			    AS 		id ,
+        lEnvironmentId      AS      environmentId,
+        strEnvironmentName  AS      environmentName,
+        strEnvironmentPath  AS      environmentPath,
+        lGroupId 		    AS 		groupId ,
+        strGroupName  	    AS  	groupName,
+        strAppName     	    AS  	appName,
+        nIsDelete           AS      isDelete,
+        strRemark           AS      remark,
+        dtCreateTime 	    AS 		createTime,
+        dtModifyTime 	    AS 		modifyTime
+    </sql>
+
+    <insert id="save">
+        INSERT INTO tbAppInfo (lEnvironmentId,strEnvironmentName,strEnvironmentPath,strGroupName,lGroupId,strAppName,strRemark,dtCreateTime,dtModifyTime) VALUES
+        (#{environmentId},#{environmentName},#{environmentPath},#{groupName},#{groupId},#{appName},#{remark},NOW(),NOW())
+    </insert>
+
+    <select id="geAppInfoById" resultType="AppInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbAppInfo WHERE lId = #{id}
+    </select>
+
+    <select id="getAppInfoByGroupIdAndName" resultType="AppInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbAppInfo WHERE lGroupId = #{groupId} AND strAppName = #{appName}
+    </select>
+
+    <select id="getAppInfoListByAppName" resultType="AppInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbAppInfo WHERE strAppName = #{appName}
+    </select>
+
+    <select id="getExistAppInfoListByAppName" resultType="AppInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbAppInfo WHERE strAppName = #{appName} AND nIsDelete = 0
+    </select>
+
+    <select id="getAppInfoListByGroupId" resultType="AppInfo">
+        SELECT
+        <include refid="columns" />
+        FROM tbAppInfo WHERE lGroupId = #{groupId}
+    </select>
+
+    <update id="deleteAppById">
+        UPDATE tbAppInfo SET nIsDelete = 1 WHERE lId = #{appId}
+    </update>
+
+</mapper>
